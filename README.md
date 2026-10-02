@@ -968,3 +968,11 @@ class FlutterAirbaPayActivity : AppCompatActivity() {
     }
 }
 ```
+
+## Fork notes (justprodev/apay-android)
+
+Use via JitPack: add `maven { url "https://jitpack.io" }` and `implementation 'com.github.justprodev:apay-android:<tag>'`.
+
+* card.io sources (`io.card.payment`, `src/main/cpp/card.io-dmz`) are part of the module, see `src/main/cpp/LICENSE-card.io.md` (MIT).
+* OpenCV 2.4.13.7 (core, imgproc) is linked statically from `src/main/cpp/opencv/lib`. To rebuild: `opencv/build_opencv.ps1` (needs Android NDK r28+ and cmake/ninja).
+* Release: push a git tag, JitPack builds it with `jitpack.yml`.
