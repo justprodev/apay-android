@@ -22,9 +22,6 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.pages.card_reader.ScanActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.pages.home.HomeActivity"
             android:screenOrientation="portrait" />
         <activity

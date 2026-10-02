@@ -42,7 +42,6 @@ android {
     }
     buildFeatures {
         compose true
-        mlModelBinding true
         android.buildFeatures.buildConfig true
     }
 
@@ -95,8 +94,6 @@ ext {
     okhttpInterceptor = '4.9.2'
 
     retrofitVersion = '2.9.0'
-
-    tensorflow = '2.14.0'
     tokenGenerate = '0.7.0'
 }
 dependencies {
@@ -195,9 +192,6 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     androidTestImplementation "androidx.test.ext:junit:$androidxJUnit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCore"
-
-    // Tensorflow
-    implementation "org.tensorflow:tensorflow-lite:$tensorflow"
 
     // Token
     implementation "io.jsonwebtoken:jjwt:$tokenGenerate"
