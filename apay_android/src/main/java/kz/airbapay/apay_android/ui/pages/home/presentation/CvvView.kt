@@ -40,7 +40,7 @@ internal fun CvvView(
         ),
         keyboardOptions = KeyboardOptions.Default.copy(
             capitalization = KeyboardCapitalization.None,
-            autoCorrect = false,
+            autoCorrectEnabled = false,
             keyboardType = KeyboardType.NumberPassword,
             imeAction = ImeAction.Done
         ),

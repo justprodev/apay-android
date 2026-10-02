@@ -93,6 +93,8 @@ private fun initOkHttpBuilder(
     .apply {
         sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
         hostnameVerifier { _, _ -> true }
+        // PUT without body (auth/update-token) was reset by the server with STREAM_CLOSED over HTTP/2
+        protocols(listOf(okhttp3.Protocol.HTTP_1_1))
         connectTimeout(10L, TimeUnit.SECONDS)
         readTimeout(300L, TimeUnit.SECONDS)
         writeTimeout(300L, TimeUnit.SECONDS)

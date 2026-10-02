@@ -2,8 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 
-    id 'maven-publish'
-    id 'signing'
+    id 'org.jetbrains.kotlin.plugin.compose'
     id "kotlin-parcelize"
 }
 
@@ -17,7 +16,7 @@ try {
 
 android {
     namespace 'kz.airbapay.apay_android'
-    compileSdk airbaPayCompileSdk
+    compileSdk 37
 
     defaultConfig {
         minSdk 21
@@ -40,16 +39,10 @@ android {
         mlModelBinding true
         android.buildFeatures.buildConfig true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.5.9' // '1.4.3'
-    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = jdkCompileVersion
     }
 }
 
@@ -144,7 +137,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-wallet:$gmsPayService")
 
     // Jetpack compose
-    def composeBom = platform("androidx.compose:compose-bom:$airbaPayJetpackCompose") // https://developer.android.com/jetpack/compose/setup#bom-version-mapping
+    def composeBom = platform("androidx.compose:compose-bom:2025.12.00") // https://developer.android.com/jetpack/compose/setup#bom-version-mapping
     implementation composeBom
     androidTestImplementation composeBom
 
@@ -205,100 +198,25 @@ dependencies {
 }
 
 
-group 'kz.airbapay' // this is your groupId
-version '2.1.2' //_2023_08_00'  // todo меняй и DataHolder.sdkVersion
-
-ext { // this are variables
-    pomGroupId = group
-    pomVersion = version
-    pomArtifactId = "apay_android"
-    pomArtifactName = "apay_android"
-
-    jdkCompileVersion = 17
-}
-
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.release = 17
-}
-
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {//это чтоб убрать необходимость писать аннотации варнингов для Jetpack Compose
-        freeCompilerArgs += [
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
                 "-opt-in=kotlin.ExperimentalUnsignedTypes",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
                 "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                 "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-                "-opt-in=androidx.compose.ExperimentalComposeApi",
-                "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-                "-opt-in=androidx.compose.runtime.ExperimentalComposeApi",
                 "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+                "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
                 "-opt-in=coil.annotation.ExperimentalCoilApi",
                 "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
                 "-opt-in=com.google.accompanist.pager.ExperimentalPagerApi",
                 "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi"
-        ]
+        )
     }
 }
 
-afterEvaluate {
-    publishing {
-
-        publications {
-            mavenJava(MavenPublication) {
-                groupId = "${pomGroupId}"
-                artifactId = "${pomArtifactId}"
-                version = "${pomVersion}"
-                from components.release
-
-                pom {
-                    name = "${pomArtifactName}"
-                    description = "AirbaPay sdk android"
-                    url = "https://airbapay.kz"
-                    inceptionYear = '2023'
-
-                    licenses {
-                        license {
-                            name = 'Apache License, Version 2.0' // the name of your license
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                            // url to your license
-                        }
-                    }
-                    developers { // put the developers here
-                        developer {
-                            id = 'developerslicense'
-                            name = 'AirbaPay'
-                            email = 'developers.license@technodom.kz'
-                        }
-                    }
-                    scm { // GIT data of your project
-                        url = "scm:git:https://github.com/developerslicense/apay.git"
-                        developerConnection = 'scm:git:ssh://github.com/developerslicense/apay.git'
-                    }
-
-                }
-            }
-        }
-
-        repositories {
-            maven {
-                name = "OSSRH"
-//                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/" // this is the repo for snapshots
-                url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-                // this is deploys to the stating repo in nexus
-                credentials {
-                    username = properties.osshrUser
-                    password = properties.osshrPass
-                }
-            }
-        }
-    }
-    signing {
-        // By default the Signing Plugin uses a Java-based implementation of PGP for signing. This implementation cannot use the gpg-agent program for managing private keys, though. If you want to use the gpg-agent, you can change the signatory implementation used by the Signing Plugin:
-        useGpgCmd() // YOU NEED THIS. Without this method, gradle will not work with GnuPG keys.
-        sign publishing.publications.mavenJava
-    }
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }

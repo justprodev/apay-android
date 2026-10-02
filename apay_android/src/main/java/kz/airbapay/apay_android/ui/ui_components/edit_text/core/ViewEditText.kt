@@ -53,7 +53,7 @@ internal fun ViewEditText(
     keyboardActions: KeyboardActions,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
         capitalization = KeyboardCapitalization.None,
-        autoCorrect = false,
+        autoCorrectEnabled = false,
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Next
     ),

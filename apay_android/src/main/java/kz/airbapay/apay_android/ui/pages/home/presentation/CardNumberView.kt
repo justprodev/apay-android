@@ -43,7 +43,7 @@ internal fun CardNumberView(
         ),
         keyboardOptions = KeyboardOptions.Default.copy(
             capitalization = KeyboardCapitalization.None,
-            autoCorrect = false,
+            autoCorrectEnabled = false,
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next
         ),
