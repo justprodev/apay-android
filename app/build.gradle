@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
 }
 
 android {
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "kz.airbapayandroid.composesdkstand" // для заливки тестовой сборки в firebase
-        minSdk 21
+        minSdk 23
         targetSdk airbaPayCompileSdk
         versionCode 15 // 745
         versionName "2.3"
@@ -30,14 +31,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = jdkCompileVersion
-    }
     buildFeatures {
         compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.5.9' //'1.4.3'
     }
     packaging {
         resources {
@@ -46,9 +41,10 @@ android {
     }
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {//это чтоб убрать необходимость писать аннотации варнингов для Jetpack Compose
-        freeCompilerArgs += [
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        freeCompilerArgs.addAll([
                 "-opt-in=kotlin.ExperimentalUnsignedTypes",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
@@ -62,7 +58,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
                 "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
                 "-opt-in=com.google.accompanist.pager.ExperimentalPagerApi",
                 "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi"
-        ]
+        ])
     }
 }
 
