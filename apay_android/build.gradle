@@ -227,7 +227,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'kz.airbapay'
                 artifactId = 'apay_android'
-                version = '2.1.2-technofit.2'
+                version = '2.1.3'
             }
         }
     }
