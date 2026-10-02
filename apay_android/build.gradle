@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 
+    id 'maven-publish'
     id 'org.jetbrains.kotlin.plugin.compose'
     id "kotlin-parcelize"
 }
@@ -32,6 +33,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
         }
     }
     buildFeatures {
@@ -219,4 +225,16 @@ kotlin {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'kz.airbapay'
+                artifactId = 'apay_android'
+                version = '2.1.2-technofit.1'
+            }
+        }
+    }
 }
